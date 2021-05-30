@@ -1,0 +1,64 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "predeploy": "npm --prefix \"$RESOURCE_DIR\" run build",
+    "source": "functions"
+  },
+  "hosting": {
+    "public": "dist/visitors-book",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/isEmailRegister",
+        "function": "isEmailRegister"
+      },
+      {
+        "source": "/getNotes",
+        "function": "getNotes"
+      },
+      {
+        "source": "/getNotesCount",
+        "function": "getNotesCount"
+      },
+      {
+        "source": "/getUsersCount",
+        "function": "getUsersCount"
+      },
+      {
+        "source": "/getUserNotes",
+        "function": "getUserNotes"
+      },
+      {
+        "source": "/getNoteById",
+        "function": "getNoteById"
+      },
+      {
+        "source": "/addNote",
+        "function": "addNote"
+      },
+      {
+        "source": "/editNote",
+        "function": "editNote"
+      },
+      {
+        "source": "/deleteNote",
+        "function": "deleteNote"
+      },
+      {
+        "source": "/updateUsersCount",
+        "function": "updateUsersCount"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

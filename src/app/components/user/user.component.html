@@ -1,0 +1,24 @@
+<div class="container-fluid pt-5">
+  <h2 class="text-center text-white mt-5"> Visitors Book </h2>
+  <div class="container mt-3">
+    <div *ngIf="notes.length; else noNotes" class="notes-list p-3">
+      <div *ngFor="let note of notes" class="note mx-auto my-2 p-3 pb-1" (click)="editNote($event ,note.id)">
+        <span class="text-secondary">{{note.name}}</span>
+        <h3 class="text-center">{{note.title}}</h3>
+        <p class="text-justify">{{note.note}}</p>
+        <div class="footer d-flex justify-content-between">
+          <span class="text-secondary">{{note.date_created?._seconds * 1000 | date:'dd/MM/yyyy h:mm a'}}</span>
+          <span>
+            <i id="delete" class="fas fa-trash-alt text-danger" (click)="deleteNote(note.id)"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noNotes>
+      <h3 class="text-center text-white pt-5"><i>You don't have any notes yet</i></h3>
+    </ng-template>
+
+    <i class="fas fa-plus add-note-btn" (click)="addNote()"></i>
+  </div>
+</div>

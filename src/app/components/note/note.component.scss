@@ -1,0 +1,26 @@
+@import '../../../styles.scss';
+
+.container-fluid {
+  @include background;
+
+  .container {
+    max-width: 900px;
+    height: calc(100vh - 250px);
+    min-height: 400px;
+    border-radius: 15px;
+    background-color: rgba(0,0,0,0.3);
+    overflow: auto;
+
+    .note {
+      box-shadow: 0 0 12px #333;
+      border-radius: 10px;
+
+      p {
+        max-width: 600px;
+        white-space: pre-wrap;
+        text-align: justify;
+      }
+    }
+
+  }
+}

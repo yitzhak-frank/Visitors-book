@@ -1,0 +1,66 @@
+<div class="container-fluid pt-5">
+  <h2 class="text-center text-white mt-5"> Visitors Book </h2>
+  <div class="container mt-3">
+
+    <div class="d-flex justify-content-between">
+
+      <div class="p-3 pb-0">
+
+        <div class=" d-flex">
+          <h5 class="text-white">
+            Page <b class="text-info">{{currentPage}}</b>
+            From <b class="text-info">{{pagesCount}}</b>
+          </h5>
+        </div>
+
+        <div *ngIf="pagesCount > 1" class="pagination d-flex justify-content-end">
+
+          <button class="prev btn btn-outline-info m-1" [disabled]="!(currentPage -1)"
+            (click)="changeCurrentPage(currentPage -1)">Prev</button>
+
+          <div class="pages">
+            <div>
+              <button *ngFor="let page of pagesAr index as i" class="page btn btn-outline-info m-1"
+                [ngClass]="{'btn-info text-white': currentPage === i+1}" (click)="changeCurrentPage(i+1)">
+                {{i+1}}
+              </button>
+            </div>
+          </div>
+
+          <button class="next btn btn-outline-info m-1" [disabled]="currentPage + 1 > pagesCount"
+            (click)="changeCurrentPage(currentPage +1)">Next</button>
+
+        </div>
+
+      </div>
+
+      <div class="p-3 pb-0">
+        <h6 class="sum text-white">
+          Sum notes: <b class="text-info">{{totalNotes}}</b> <br>
+          Sum users: <b class="text-info">{{totalUsers}}</b>
+        </h6>
+      </div>
+
+    </div>
+
+    <div *ngIf="notes?.length; else noNotes" class="notes-list p-3">
+      <div *ngFor="let note of notes index as i" class="note mx-auto my-2 p-3 pb-1" (click)="showNote($event, note.id)">
+        <div class="d-flex justify-content-between">
+          <span class="text-secondary">{{note.name}}</span>
+          <span class="text-secondary">{{((currentPage -1) * 10) + i+1}}</span>
+        </div>
+        <h3 class="text-center">{{note.title}}</h3>
+        <p class="text-justify">{{note.note}}</p>
+        <div class="footer d-flex justify-content-between">
+          <span class="text-secondary">{{note.date_created?._seconds * 1000 | date:'dd/MM/yyyy h:mm a'}}</span>
+          <i id="delete" class="fas fa-trash-alt text-danger" (click)="deleteNote(note.id)"></i>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noNotes>
+      <h3 class="text-center text-white pt-5"><i>There is no notes.</i></h3>
+    </ng-template>
+
+  </div>
+</div>

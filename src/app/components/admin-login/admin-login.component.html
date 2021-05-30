@@ -1,0 +1,35 @@
+<form #loginForm="ngForm" class="p-4 mx-2" (ngSubmit)="onSubmit(loginForm)" novalidate autocomplete="off">
+  <div class="row">
+
+    <h6 *ngIf="forgotPassword" class="text-center text-white">Fill your email address to reset your password</h6>
+
+    <div class="col-12 my-2">
+      <label for="email">Email</label>
+      <input #emailRef="ngModel" type="text" class="form-control" id="email" name="email" placeholder="Email..."
+        minlength="2" maxlength="25" required pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+        [(ngModel)]="form.email"
+        [ngClass]="{'is-valid': emailRef.valid && emailRef.touched, 'is-invalid': emailRef.invalid && emailRef.touched}">
+      <div class="invalid-feedback" *ngIf="emailRef.errors?.required">Email is required</div>
+      <div class="invalid-feedback" *ngIf="emailRef.errors?.pattern">
+        {{emailRef.errors.pattern.actualValue}} is not a valid email address
+      </div>
+    </div>
+    <div *ngIf="!forgotPasswordIndex" class="col-12 my-2">
+      <label for="title">Password</label>
+      <input #passRef="ngModel" type="password" class="form-control" id="pass" name="pass" placeholder="Password..."
+        minlength="6" maxlength="50" required [(ngModel)]="form.pass"
+        [ngClass]="{'is-valid': passRef.valid && passRef.touched, 'is-invalid': passRef.invalid && passRef.touched}">
+      <div class="invalid-feedback" *ngIf="passRef.errors?.required">Password is required</div>
+      <div class="invalid-feedback" *ngIf="passRef.errors?.minlength">
+        Password must be at least {{passRef.errors.minlength.requiredLength}} characters
+      </div>
+      <h6 class="text-center text-white mt-5">
+        Forgot password? <b class="text-warning forgot-pass" (click)="forgotPassword()">Click here</b>
+      </h6>
+    </div>
+    <div class="col-12">
+      <button type="button" (click)="closeForm()">Cancel</button>
+      <input type="submit" value="Send" [disabled]="loginForm.form.invalid">
+    </div>
+  </div>
+</form>

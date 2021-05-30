@@ -1,0 +1,21 @@
+@import '../../../styles.scss';
+
+header {
+  height: 80px;
+  background-image: linear-gradient(to left, rgb(180, 27, 27), rgba(255, 150, 150, 1));
+  position: fixed;
+  top: 0;
+
+  .logo {
+    height: 80px;
+  }
+
+  button.sign-in,
+  button.sign-out {
+    @include button;
+    width: 120px;
+    &:hover {
+      box-shadow: 0 0 6px black;
+    }
+  }
+}

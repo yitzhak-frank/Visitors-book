@@ -1,0 +1,46 @@
+<div class="container-fluid pt-5">
+
+  <app-back-home></app-back-home>
+
+  <h2 class="text-center text-white mt-5"> Note Editor </h2>
+  <div class="container p-3">
+    <form #noteForm="ngForm" class="p-4 mx-auto my-3" (ngSubmit)="onSubmit(noteForm)" novalidate autocomplete="off">
+      <div class="row">
+        <div class="col-12 my-2">
+          <label for="name">Your name</label>
+          <input #nameRef="ngModel" type="text" class="form-control" id="name" name="name" placeholder="Your name..."
+            minlength="2" maxlength="25" required [(ngModel)]="form.name"
+            [ngClass]="{'is-valid': nameRef.valid && nameRef.touched, 'is-invalid': nameRef.invalid && nameRef.touched}">
+          <div class="invalid-feedback" *ngIf="nameRef.errors?.required">Name is required</div>
+          <div class="invalid-feedback" *ngIf="nameRef.errors?.minlength">
+            Name must be at least {{nameRef.errors.minlength.requiredLength}} characters
+          </div>
+        </div>
+        <div class="col-12 my-2">
+          <label for="title">Title</label>
+          <input #titleRef="ngModel" type="text" class="form-control" id="title" name="title" placeholder="Title..."
+            minlength="2" maxlength="50" required [(ngModel)]="form.title"
+            [ngClass]="{'is-valid': titleRef.valid && titleRef.touched, 'is-invalid': titleRef.invalid && titleRef.touched}">
+          <div class="invalid-feedback" *ngIf="titleRef.errors?.required">Title is required</div>
+          <div class="invalid-feedback" *ngIf="titleRef.errors?.minlength">
+            Title must be at least {{titleRef.errors.minlength.requiredLength}} characters
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="note">Note</label>
+          <textarea #noteRef="ngModel" class="form-control" id="note" name="note" placeholder="Note..." rows="5"
+            minlength="20" maxlength="750" required [(ngModel)]="form.note"
+            [ngClass]="{'is-valid': noteRef.valid && noteRef.touched, 'is-invalid': noteRef.invalid && noteRef.touched}"></textarea>
+          <div class="invalid-feedback" *ngIf="noteRef.errors?.required">Note is required</div>
+          <div class="invalid-feedback" *ngIf="noteRef.errors?.minlength">
+            Note must be at least {{noteRef.errors.minlength.requiredLength}} characters
+          </div>
+        </div>
+        <div class="col-12">
+          <button type="reset" (click)="resetForm()">Reset</button>
+          <input type="submit" value="Save" [disabled]="noteForm.form.invalid">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

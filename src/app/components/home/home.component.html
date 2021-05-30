@@ -1,0 +1,14 @@
+<div class="container-fluid pt-5">
+
+  <h1 class="heading text-center text-white mt-3 pt-5">Welcome To Frank Hotel</h1>
+
+  <div class="sign-in-options mt-5 mx-auto">
+    <button class="visitor" (click)="userLogin()">Login as a visitor</button>
+    <button class="admin" (click)="showLoginForm()">Login as an admin</button>
+  </div>
+
+  <div *ngIf="showFormIndex" class="dark-cover d-flex justify-content-center align-items-center">
+    <app-admin-login (close)="closeLoginForm()"></app-admin-login>
+  </div>
+
+</div>

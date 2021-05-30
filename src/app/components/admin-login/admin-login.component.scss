@@ -1,0 +1,29 @@
+@import '../../../styles.scss';
+
+form {
+  max-width: 500px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 5px;
+  box-shadow: 0 0 12px white;
+
+  label {
+    color: white;
+  }
+
+  textarea {
+    white-space: 'pre-wrap';
+  }
+
+  input[type="submit"],
+  button {
+    @include button;
+  }
+
+  .forgot-pass {
+    transition: 0.4s;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
