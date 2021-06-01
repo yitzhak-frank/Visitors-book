@@ -33,7 +33,7 @@ export const getNotesCount = functions.https.onRequest((req, res) => {
     } catch(err) {
       res.status(400).send(err);
     }
-  });;
+  });
 });
 
 export const getUsersCount = functions.https.onRequest((req, res) => {
@@ -45,5 +45,5 @@ export const getUsersCount = functions.https.onRequest((req, res) => {
     } catch(err) {
       res.status(400).send(err);
     }
-  });;
+  });
 });

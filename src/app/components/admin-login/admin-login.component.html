@@ -1,7 +1,7 @@
 <form #loginForm="ngForm" class="p-4 mx-2" (ngSubmit)="onSubmit(loginForm)" novalidate autocomplete="off">
   <div class="row">
 
-    <h6 *ngIf="forgotPassword" class="text-center text-white">Fill your email address to reset your password</h6>
+    <h6 *ngIf="forgotPasswordIndex" class="text-center text-white">Fill your email address to reset your password</h6>
 
     <div class="col-12 my-2">
       <label for="email">Email</label>

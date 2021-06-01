@@ -36,8 +36,10 @@ export class AdminLoginComponent implements OnInit {
 
     if(this.forgotPasswordIndex) {
       return this.Auth.forgotPassword(this.form.email)
-      .then(() => window.alert('Reset email has been send to your email address'))
-      .catch(() => window.alert('Something went wrong please try again later'));
+      .then(() => {
+        window.alert('Reset email has been send to your email address');
+        this.closeForm();
+      }).catch(() => window.alert('Something went wrong please try again later'));
     }
 
     const login = await this.Auth.adminLogin(this.form.email, this.form.pass);

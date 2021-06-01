@@ -1,5 +1,5 @@
 import functions = require("firebase-functions");
-import { notesRef, usersRef, _admin } from '../exports';
+import { notesRef, usersRef, admin } from '../exports';
 import { authUser } from "../middleware/auth";
 
 export const getUserNotes = functions.https.onRequest((req, res) => {
@@ -31,7 +31,7 @@ export const getNoteById = functions.https.onRequest((req, res) => {
 export const addNote = functions.https.onRequest((req, res) => {
   return authUser(req, res, async (auth_uid) => {
     const { note } = req.body;
-    note.date_created = _admin.firestore.FieldValue.serverTimestamp();
+    note.date_created = admin.firestore.FieldValue.serverTimestamp();
     note.uid = auth_uid;
     try{
       const result = await notesRef.add(note);
@@ -47,8 +47,11 @@ export const editNote = functions.https.onRequest((req, res) => {
     const { note, noteId, uid } = req.body;
     if(uid !== auth_uid) res.status(401).send({message: 'Only author can edit his notes'});
     try{
+      const oldNote = await notesRef.doc(noteId).get();
+      if(oldNote.data()?.uid !== auth_uid) res.status(401).send({message: 'Only author can edit his notes'});
+
       const result = await notesRef.doc(noteId).update(note);
-      res.send(result);
+      res.send({result, debug: oldNote.data()});
     } catch(err) {
       res.status(400).send(err);
     }
@@ -60,6 +63,9 @@ export const deleteNote = functions.https.onRequest((req, res) => {
     const { id, uid } = req.body;
     if(uid !== auth_uid) res.status(401).send({message: 'Only author can delete his notes'});
     try{
+      const oldNote =  await notesRef.doc(id).get();
+      if(oldNote.data()?.uid !== auth_uid) res.status(401).send({message: 'Only author can edit his notes'});
+
       const result = await notesRef.doc(id).delete();
       res.send(result);
     } catch(err) {
@@ -74,14 +80,14 @@ export const updateUsersCount = functions.https.onRequest((req, res) => {
     if(uid !== auth_uid) res.status(401).send({message: 'You can add only your self'});
     try{
       const users = await usersRef.get();
-      const count  = users.data();
+      const count = users.data();
 
       if(count && count.uids.includes(uid)) {
         res.status(400).send({error: 'user already exist'});
         return;
       }
       const result = await usersRef.update({
-        uids: _admin.firestore.FieldValue.arrayUnion(uid)
+        uids: admin.firestore.FieldValue.arrayUnion(uid)
       });
       res.send(result);
     } catch(err) {

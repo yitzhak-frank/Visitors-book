@@ -1,18 +1,18 @@
-import { adminRef, _admin } from '../exports';
+import { adminRef, admin } from '../exports';
 
 export const authUser = async (req: any, res: any, callback: (uid: string) => any) => {
   try{
-    const { uid } = await _admin.auth().verifyIdToken(req.header('x-auth-token') || 'string');
+    const { uid } = await admin.auth().verifyIdToken(req.header('x-auth-token') || 'string');
     if(!uid) res.status(401).send({message: 'Your are not a register user'});
     else callback(uid);
   } catch(err) {
-    res.status(401).send({err, token: req.header('x-auth-token')});
+    res.status(401).send(err);
   }
 }
 
 export const authAdmin = async (req: any, res: any, callback: () => any) => {
   try{
-    const { email } = await _admin.auth().verifyIdToken(req.header('x-auth-token') || 'string');
+    const { email } = await admin.auth().verifyIdToken(req.header('x-auth-token') || 'string');
     if(!email) return res.status(401).send({message: 'Admin required', isAdmin: false});
 
     const admins = await adminRef.get();

@@ -8,4 +8,4 @@ export const notesRef = db.collection('notes');
 export const usersRef = db.collection('users_count').doc('users_count');
 export const adminRef = db.collection('admins').doc('admins_list');
 
-export const _admin = admin;
+export { admin }
