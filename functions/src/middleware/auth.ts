@@ -12,15 +12,25 @@ export const authUser = async (req: any, res: any, callback: (uid: string) => an
 
 export const authAdmin = async (req: any, res: any, callback: () => any) => {
   try{
-    const { email } = await admin.auth().verifyIdToken(req.header('x-auth-token') || 'string');
-    if(!email) return res.status(401).send({message: 'Admin required', isAdmin: false});
+    const isAdmin = await checkIsAdmin(req.header('x-auth-token') || 'string')
+    if(isAdmin) callback();
+    else res.status(401).send({message: 'Admin required', isAdmin: false});
+  } catch(err) {
+    res.status(401).send(err);
+  }
+}
+
+export const checkIsAdmin = async (token: string) => {
+  try {
+    const { email } = await admin.auth().verifyIdToken(token);
+    if(!email) return false;
 
     const admins = await adminRef.get();
     const result = admins.data();
 
-    if(result ? result[email || ''] : false) callback();
-    else res.status(401).send({message: 'Admin required', isAdmin: false});
+    if(result ? result[email || ''] : false) return true;
+    else return false;
   } catch(err) {
-    res.status(401).send(err);
+    return false;
   }
 }

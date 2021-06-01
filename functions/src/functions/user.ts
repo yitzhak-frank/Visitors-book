@@ -1,6 +1,6 @@
 import functions = require("firebase-functions");
 import { notesRef, usersRef, admin } from '../exports';
-import { authUser } from "../middleware/auth";
+import { authUser, checkIsAdmin } from "../middleware/auth";
 
 export const getUserNotes = functions.https.onRequest((req, res) => {
   return authUser(req, res, async (auth_uid) => {
@@ -20,6 +20,11 @@ export const getNoteById = functions.https.onRequest((req, res) => {
     const { id, uid } = req.body;
     if(uid !== auth_uid) res.status(401).send({message: 'Only author can read his notes'});
     try{
+      const isAdmin = await checkIsAdmin(req.header('x-auth-token') || 'string');
+      if(!isAdmin) {
+        const note = await notesRef.doc(id).get();
+        if(note.data()?.uid !== auth_uid) res.status(401).send({message: 'Only author can read his notes'});
+      }
       const result = await notesRef.doc(id).get();
       res.send({...result.data(), id});
     } catch(err) {
@@ -51,7 +56,7 @@ export const editNote = functions.https.onRequest((req, res) => {
       if(oldNote.data()?.uid !== auth_uid) res.status(401).send({message: 'Only author can edit his notes'});
 
       const result = await notesRef.doc(noteId).update(note);
-      res.send({result, debug: oldNote.data()});
+      res.send(result);
     } catch(err) {
       res.status(400).send(err);
     }
@@ -63,9 +68,11 @@ export const deleteNote = functions.https.onRequest((req, res) => {
     const { id, uid } = req.body;
     if(uid !== auth_uid) res.status(401).send({message: 'Only author can delete his notes'});
     try{
-      const oldNote =  await notesRef.doc(id).get();
-      if(oldNote.data()?.uid !== auth_uid) res.status(401).send({message: 'Only author can edit his notes'});
-
+      const isAdmin = await checkIsAdmin(req.header('x-auth-token') || 'string');
+      if(!isAdmin) {
+        const oldNote = await notesRef.doc(id).get();
+        if(oldNote.data()?.uid !== auth_uid) res.status(401).send({message: 'Only author can delete his notes'});
+      }
       const result = await notesRef.doc(id).delete();
       res.send(result);
     } catch(err) {
