@@ -17,6 +17,7 @@ import { AddEditNoteComponent } from './components/add-edit-note/add-edit-note.c
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HttpClientModule } from '@angular/common/http';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     FooterComponent,
     BackHomeComponent,
     AdminLoginComponent,
-    AddEditNoteComponent
+    AddEditNoteComponent,
+    LoadingComponent
   ],
   imports: [
     FormsModule,

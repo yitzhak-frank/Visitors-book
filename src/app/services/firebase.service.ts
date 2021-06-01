@@ -8,7 +8,8 @@ import { AuthService } from './auth.service';
 })
 export class FirebaseService {
 
-  private apiUrl = '/';
+  private apiUrl: string = '/';
+  public loading: boolean = true;
 
   constructor(
     private Auth: AuthService,
@@ -61,21 +62,33 @@ export class FirebaseService {
   }
 
   public async get(route: string) {
+    this.loading  = true;
     const headers = await this.setTokenHeaders();
-    return await this.http.get(this.apiUrl + route, {headers}).toPromise();
+    const result  = await this.http.get(this.apiUrl + route, {headers}).toPromise();
+    this.loading  = false;
+    return result;
   }
 
   public async post(route: string, body: {}) {
+    this.loading  = true;
     const headers = await this.setTokenHeaders();
-    return await this.http.post(this.apiUrl + route, body, {headers}).toPromise();
+    const result  = await this.http.post(this.apiUrl + route, body, {headers}).toPromise();
+    this.loading  = false;
+    return result;
   }
 
   public async put(route: string, body: {}) {
+    this.loading  = true;
     const headers = await this.setTokenHeaders();
-    return await this.http.put(this.apiUrl + route, body, {headers}).toPromise();
+    const result  = await this.http.put(this.apiUrl + route, body, {headers}).toPromise();
+    this.loading  = false;
+    return result;
   }
   public async patch(route: string, body: {}) {
+    this.loading  = true;
     const headers = await this.setTokenHeaders();
-    return await this.http.patch(this.apiUrl + route, body, {headers}).toPromise();
+    const result  = await this.http.patch(this.apiUrl + route, body, {headers}).toPromise();
+    this.loading  = false;
+    return result;
   }
 }
