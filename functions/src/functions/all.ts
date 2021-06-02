@@ -6,8 +6,7 @@ export const isEmailRegister = functions.https.onRequest(async (req, res) => {
   try{
     const admins = await adminRef.get();
     const result = admins.data();
-    if(result ? result[email || ''] : false) res.send(true);
-    else res.send(false);
+    res.send(result && result[email]);
   } catch(err) {
     res.status(400).send(err);
   }

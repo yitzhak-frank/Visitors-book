@@ -28,8 +28,7 @@ export const checkIsAdmin = async (token: string) => {
     const admins = await adminRef.get();
     const result = admins.data();
 
-    if(result ? result[email || ''] : false) return true;
-    else return false;
+    return result && result[email];
   } catch(err) {
     return false;
   }
